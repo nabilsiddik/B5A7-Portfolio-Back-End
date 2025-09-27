@@ -11,10 +11,14 @@ export enum UserStatus {
     RESTRICTRED = 'RESTRICTED'
 }
 
-export interface IUser{
-    fullName: string,
-    email: string,
-    password: string,
-    phone: string,
-    picture: string,
+export interface IUser {
+  id?: number;
+  fullName: string;
+  email: string;
+  password: string;
+  role?: UserRole;
+  phone?: string;
+  picture?: string;
+  status?: UserStatus;
+  isVerified?: boolean;  
 }

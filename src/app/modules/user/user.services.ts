@@ -5,22 +5,22 @@ import { IUser, UserRole, UserStatus } from "./user.interfaces";
 import bcrypt from 'bcrypt'
 
 // Create user
-const createUser = async(userPayload: IUser) => {
-    if(!userPayload){
+const createUser = async (userPayload: Partial<IUser>) => {
+    if (!userPayload) {
         throw new AppError(404, 'User payload not found')
     }
 
-    const {email, password} = userPayload
+    const { email, password } = userPayload
 
-    if(!email){
+    if (!email) {
         throw new AppError(404, 'email not found')
     }
 
     const isUserExist = await prisma.user.findUnique({
-        where: {email}
+        where: { email }
     })
 
-    if(isUserExist){
+    if (isUserExist) {
         throw new AppError(400, 'User already exist with this email.')
     }
 
@@ -28,11 +28,10 @@ const createUser = async(userPayload: IUser) => {
     const hashedPassword = await bcrypt.hash(password as string, Number(envVars.SALT_ROUND))
 
     const modifiedUser = {
-        ...userPayload,
+        fullName: userPayload.fullName!,
+        email: userPayload.email!,
         password: hashedPassword,
-        role: UserRole.USER,
-        status: UserStatus.ACTIVE
-    }
+    };
 
     const createdUser = await prisma.user.create({
         data: modifiedUser
