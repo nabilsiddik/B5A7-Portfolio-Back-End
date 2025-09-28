@@ -4,6 +4,6 @@ import { checkAuth } from "../../middlewares/checkAuth";
 
 const blogRouter = Router()
 
-blogRouter.post('/', checkAuth(), BlogControllers.createBlog)
+blogRouter.post('/', BlogControllers.createBlog)
 
 export default blogRouter
