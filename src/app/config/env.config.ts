@@ -10,10 +10,11 @@ interface EnvConfig {
     JWT_ACCESS_EXPIRES: string,
     JWT_REFRESH_SECRET: string,
     JWT_REFRESH_EXPIRES: string,
+    NEXT_AUTH_SESSION_TOKEN: string
 }
 
 const loadEnvVariables = (): EnvConfig => {
-    const requiredEnvVariables: string[] = ['PORT', 'NODE_ENV', 'DATABASE_URL', 'SALT_ROUND', 'JWT_ACCESS_SECRET', 'JWT_ACCESS_EXPIRES', 'JWT_REFRESH_SECRET', 'JWT_REFRESH_EXPIRES']
+    const requiredEnvVariables: string[] = ['PORT', 'NODE_ENV', 'DATABASE_URL', 'SALT_ROUND', 'JWT_ACCESS_SECRET', 'JWT_ACCESS_EXPIRES', 'JWT_REFRESH_SECRET', 'JWT_REFRESH_EXPIRES', 'NEXT_AUTH_SESSION_TOKEN']
 
     requiredEnvVariables.forEach(key => {
         if (!process.env[key]) {
@@ -30,6 +31,7 @@ const loadEnvVariables = (): EnvConfig => {
         JWT_ACCESS_EXPIRES: process.env.JWT_ACCESS_EXPIRES as string,
         JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
         JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES as string,
+        NEXT_AUTH_SESSION_TOKEN: process.env.NEXT_AUTH_SESSION_TOKEN as string,
     }
 }
 
