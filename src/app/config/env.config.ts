@@ -10,11 +10,13 @@ interface EnvConfig {
     JWT_ACCESS_EXPIRES: string,
     JWT_REFRESH_SECRET: string,
     JWT_REFRESH_EXPIRES: string,
-    NEXT_AUTH_SESSION_TOKEN: string
+    NEXT_AUTH_SESSION_TOKEN: string,
+    ADMIN_EMAIL: string,
+    ADMIN_PASSWORD: string
 }
 
 const loadEnvVariables = (): EnvConfig => {
-    const requiredEnvVariables: string[] = ['PORT', 'NODE_ENV', 'DATABASE_URL', 'SALT_ROUND', 'JWT_ACCESS_SECRET', 'JWT_ACCESS_EXPIRES', 'JWT_REFRESH_SECRET', 'JWT_REFRESH_EXPIRES', 'NEXT_AUTH_SESSION_TOKEN']
+    const requiredEnvVariables: string[] = ['PORT', 'NODE_ENV', 'DATABASE_URL', 'SALT_ROUND', 'JWT_ACCESS_SECRET', 'JWT_ACCESS_EXPIRES', 'JWT_REFRESH_SECRET', 'JWT_REFRESH_EXPIRES', 'NEXT_AUTH_SESSION_TOKEN', 'ADMIN_EMAIL', 'ADMIN_PASSWORD']
 
     requiredEnvVariables.forEach(key => {
         if (!process.env[key]) {
@@ -32,6 +34,8 @@ const loadEnvVariables = (): EnvConfig => {
         JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
         JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES as string,
         NEXT_AUTH_SESSION_TOKEN: process.env.NEXT_AUTH_SESSION_TOKEN as string,
+        ADMIN_EMAIL: process.env.ADMIN_EMAIL as string,
+        ADMIN_PASSWORD: process.env.ADMIN_PASSWORD as string
     }
 }
 

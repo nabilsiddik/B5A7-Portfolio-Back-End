@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import app from './app'
 import { prisma } from './app/config/db.config'
+import { seedAdmin } from './app/utils/seedAdmin'
 
 dotenv.config()
 
@@ -26,6 +27,7 @@ const startServer = async () => {
 
 (async() => {
     await startServer()
+    await seedAdmin()
 })()
 
 
