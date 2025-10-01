@@ -8,40 +8,55 @@ datasource db {
 }
 
 // User model
-model User{
-  id Int @id @default(autoincrement())
-  fullName String
-  email String @unique
-  password String
-  role UserRole @default(USER)
-  phone String?
-  picture String?
-  status UserStatus @default(ACTIVE)
-  isVerified Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  blogs Blog[]
+model User {
+  id         Int        @id @default(autoincrement())
+  fullName   String
+  email      String     @unique
+  password   String
+  role       UserRole   @default(USER)
+  phone      String?
+  picture    String?
+  status     UserStatus @default(ACTIVE)
+  isVerified Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  blogs      Blog[]
+  projects   Project[]
 }
 
 // blog model
-model Blog{
-  id Int @id @default(autoincrement())
-  title String
-  content String
+model Blog {
+  id            Int      @id @default(autoincrement())
+  title         String
+  content       String
   featuredImage String
-  isFeatured Boolean @default(false)
-  tags String[]
-  view Int @default(0)
-  authorId Int
-  author User @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isFeatured    Boolean  @default(false)
+  tags          String[]
+  view          Int      @default(0)
+  authorId      Int
+  author        User     @relation(fields: [authorId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Project {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  thumbnail    String
+  features     String[]
+  githubClient String
+  githubServer String
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 enum UserRole {
   ADMIN
   USER
-} 
+}
 
 enum UserStatus {
   ACTIVE
