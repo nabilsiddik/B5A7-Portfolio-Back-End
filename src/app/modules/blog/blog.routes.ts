@@ -5,7 +5,7 @@ import { blogSchema } from "./blog.validations";
 
 const blogRouter = Router();
 
-blogRouter.post("/", validateRequest(blogSchema), BlogControllers.createBlog);
+blogRouter.post("/", BlogControllers.createBlog);
 blogRouter.get("/", BlogControllers.getAllBlogs);
 blogRouter.get("/:id", BlogControllers.getSingleBlog);
 blogRouter.patch("/:id", BlogControllers.updateBlog);
