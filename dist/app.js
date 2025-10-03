@@ -11,7 +11,10 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 // middlewares
 app.use((0, cors_1.default)({
-    origin: "http://localhost:3000",
+    origin: [
+        "http://localhost:3000",
+        "https://b5-a7-portfolio-front-end.vercel.app",
+    ],
     credentials: true,
 }));
 app.use(express_1.default.json());

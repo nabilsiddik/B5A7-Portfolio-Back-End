@@ -9,7 +9,10 @@ const app = express();
 // middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://b5-a7-portfolio-front-end.vercel.app",
+    ],
     credentials: true,
   })
 );
