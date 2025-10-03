@@ -2,10 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const project_controllers_1 = require("./project.controllers");
-const validateRequest_1 = require("../../middlewares/validateRequest");
-const project_validations_1 = require("./project.validations");
 const projectRouter = (0, express_1.Router)();
-projectRouter.post("/", (0, validateRequest_1.validateRequest)(project_validations_1.createProjectSchema), project_controllers_1.ProjectControllers.createProject);
+projectRouter.post("/", project_controllers_1.ProjectControllers.createProject);
 projectRouter.get("/", project_controllers_1.ProjectControllers.getAllProjects);
 projectRouter.get("/:id", project_controllers_1.ProjectControllers.getSingleProject);
 projectRouter.patch("/:id", project_controllers_1.ProjectControllers.updateProject);

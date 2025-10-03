@@ -1,7 +1,5 @@
 import { Router } from "express";
 import { BlogControllers } from "./blog.controllers";
-import { validateRequest } from "../../middlewares/validateRequest";
-import { blogSchema } from "./blog.validations";
 
 const blogRouter = Router();
 
