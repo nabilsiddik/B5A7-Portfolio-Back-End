@@ -8,6 +8,7 @@ const createProject = async (projectPayload: Partial<IProject>) => {
     title,
     description,
     thumbnail,
+    liveSite,
     githubClient,
     features,
     githubServer,
@@ -18,6 +19,7 @@ const createProject = async (projectPayload: Partial<IProject>) => {
     !title ||
     !description ||
     !thumbnail ||
+    !liveSite ||
     !githubClient ||
     !features ||
     !githubServer ||
@@ -30,6 +32,7 @@ const createProject = async (projectPayload: Partial<IProject>) => {
     title,
     description,
     thumbnail,
+    liveSite,
     githubClient,
     githubServer,
     features,
@@ -45,7 +48,17 @@ const createProject = async (projectPayload: Partial<IProject>) => {
 
 // get all projects
 const getAllProjects = async () => {
-  const allProjects = await prisma.project.findMany();
+  const allProjects = await prisma.project.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+        },
+      },
+    },
+  });
   return allProjects;
 };
 

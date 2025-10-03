@@ -3,6 +3,7 @@ export interface IProject {
   title: string;
   description: string;
   thumbnail: string;
+  liveSite: string;
   features: string[];
   githubClient: string;
   githubServer: string;

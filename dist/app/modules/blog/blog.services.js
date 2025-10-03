@@ -19,7 +19,7 @@ const appError_1 = __importDefault(require("../../errorHelpers/appError"));
 const createBlog = (blogPayload) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, content, featuredImage, isFeatured, tags } = blogPayload;
     if (!title || !content || !featuredImage || !tags) {
-        throw new appError_1.default(400, 'Invalid credentials');
+        throw new appError_1.default(400, "Invalid credentials");
     }
     const blog = {
         title,
@@ -30,67 +30,77 @@ const createBlog = (blogPayload) => __awaiter(void 0, void 0, void 0, function* 
         authorId: 2,
     };
     const blogRes = yield db_config_1.prisma.blog.create({
-        data: blog
+        data: blog,
     });
     return blogRes;
 });
 // get all blog
 const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
-    const allBlogs = yield db_config_1.prisma.blog.findMany();
+    const allBlogs = yield db_config_1.prisma.blog.findMany({
+        include: {
+            author: {
+                select: {
+                    id: true,
+                    fullName: true,
+                    email: true,
+                },
+            },
+        },
+    });
     return allBlogs;
 });
 // get single blogs
 const getSingleBlog = (blogId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!blogId) {
-        throw new appError_1.default(404, 'Blog id not found');
+        throw new appError_1.default(404, "Blog id not found");
     }
     const blog = yield db_config_1.prisma.blog.findUnique({
-        where: { id: blogId }
+        where: { id: blogId },
     });
     if (!blog) {
-        throw new appError_1.default(404, 'Blog not found');
+        throw new appError_1.default(404, "Blog not found");
     }
     // update views
     yield db_config_1.prisma.blog.update({
         where: { id: blogId },
         data: {
             view: {
-                increment: 1
-            }
-        }
+                increment: 1,
+            },
+        },
     });
     return blog;
 });
 // update blog
 const updateBlog = (blogId, updatedPayload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!blogId) {
-        throw new appError_1.default(404, 'Blog id not found');
+        throw new appError_1.default(404, "Blog id not found");
     }
     const blog = yield db_config_1.prisma.blog.findUnique({
-        where: { id: blogId }
+        where: { id: blogId },
     });
     if (!blog) {
-        throw new appError_1.default(404, 'Blog not found');
+        throw new appError_1.default(404, "Blog not found");
     }
     const updatedBlog = yield db_config_1.prisma.blog.update({
         where: { id: blogId },
-        data: updatedPayload
+        data: updatedPayload,
     });
     return updatedBlog;
 });
 // delete blogs
 const deleteBlog = (blogId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!blogId) {
-        throw new appError_1.default(404, 'Blog id not found');
+        throw new appError_1.default(404, "Blog id not found");
     }
     const blog = yield db_config_1.prisma.blog.findUnique({
-        where: { id: blogId }
+        where: { id: blogId },
     });
     if (!blog) {
-        throw new appError_1.default(404, 'Blog not found');
+        throw new appError_1.default(404, "Blog not found");
     }
     const deletedBlog = yield db_config_1.prisma.blog.delete({
-        where: { id: blogId }
+        where: { id: blogId },
     });
     return deletedBlog;
 });
@@ -99,5 +109,5 @@ exports.BlogServices = {
     getAllBlogs,
     getSingleBlog,
     updateBlog,
-    deleteBlog
+    deleteBlog,
 };

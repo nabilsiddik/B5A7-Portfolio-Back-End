@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const blog_controllers_1 = require("./blog.controllers");
+const validateRequest_1 = require("../../middlewares/validateRequest");
+const blog_validations_1 = require("./blog.validations");
 const blogRouter = (0, express_1.Router)();
-blogRouter.post('/', blog_controllers_1.BlogControllers.createBlog);
-blogRouter.get('/', blog_controllers_1.BlogControllers.getAllBlogs);
-blogRouter.get('/:id', blog_controllers_1.BlogControllers.getSingleBlog);
-blogRouter.patch('/:id', blog_controllers_1.BlogControllers.updateBlog);
-blogRouter.delete('/:id', blog_controllers_1.BlogControllers.deleteBlog);
+blogRouter.post("/", (0, validateRequest_1.validateRequest)(blog_validations_1.blogSchema), blog_controllers_1.BlogControllers.createBlog);
+blogRouter.get("/", blog_controllers_1.BlogControllers.getAllBlogs);
+blogRouter.get("/:id", blog_controllers_1.BlogControllers.getSingleBlog);
+blogRouter.patch("/:id", blog_controllers_1.BlogControllers.updateBlog);
+blogRouter.delete("/:id", blog_controllers_1.BlogControllers.deleteBlog);
 exports.default = blogRouter;

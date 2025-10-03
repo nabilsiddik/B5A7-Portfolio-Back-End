@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -20,17 +31,17 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 // Create user
 const createUser = (userPayload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!userPayload) {
-        throw new appError_1.default(404, 'User payload not found');
+        throw new appError_1.default(404, "User payload not found");
     }
     const { email, password } = userPayload;
     if (!email) {
-        throw new appError_1.default(404, 'email not found');
+        throw new appError_1.default(404, "email not found");
     }
     const isUserExist = yield db_config_1.prisma.user.findUnique({
-        where: { email }
+        where: { email },
     });
     if (isUserExist) {
-        throw new appError_1.default(400, 'User already exist with this email.');
+        throw new appError_1.default(400, "User already exist with this email.");
     }
     // Hash the password
     const hashedPassword = yield bcrypt_1.default.hash(password, Number(env_config_1.envVars.SALT_ROUND));
@@ -40,10 +51,21 @@ const createUser = (userPayload) => __awaiter(void 0, void 0, void 0, function* 
         password: hashedPassword,
     };
     const createdUser = yield db_config_1.prisma.user.create({
-        data: modifiedUser
+        data: modifiedUser,
     });
     return createdUser;
 });
+const getCurrentUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const currentUser = yield db_config_1.prisma.user.findUnique({
+        where: { id: userId },
+    });
+    if (!currentUser) {
+        throw new appError_1.default(404, "User Not found");
+    }
+    const { password } = currentUser, rest = __rest(currentUser, ["password"]);
+    return rest;
+});
 exports.UserServices = {
-    createUser
+    createUser,
+    getCurrentUser,
 };

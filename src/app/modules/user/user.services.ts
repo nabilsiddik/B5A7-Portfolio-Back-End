@@ -2,45 +2,62 @@ import { prisma } from "../../config/db.config";
 import { envVars } from "../../config/env.config";
 import AppError from "../../errorHelpers/appError";
 import { IUser, UserRole, UserStatus } from "./user.interfaces";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 
 // Create user
 const createUser = async (userPayload: Partial<IUser>) => {
-    if (!userPayload) {
-        throw new AppError(404, 'User payload not found')
-    }
+  if (!userPayload) {
+    throw new AppError(404, "User payload not found");
+  }
 
-    const { email, password } = userPayload
+  const { email, password } = userPayload;
 
-    if (!email) {
-        throw new AppError(404, 'email not found')
-    }
+  if (!email) {
+    throw new AppError(404, "email not found");
+  }
 
-    const isUserExist = await prisma.user.findUnique({
-        where: { email }
-    })
+  const isUserExist = await prisma.user.findUnique({
+    where: { email },
+  });
 
-    if (isUserExist) {
-        throw new AppError(400, 'User already exist with this email.')
-    }
+  if (isUserExist) {
+    throw new AppError(400, "User already exist with this email.");
+  }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password as string, Number(envVars.SALT_ROUND))
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(
+    password as string,
+    Number(envVars.SALT_ROUND)
+  );
 
-    const modifiedUser = {
-        fullName: userPayload.fullName!,
-        email: userPayload.email!,
-        password: hashedPassword,
-    };
+  const modifiedUser = {
+    fullName: userPayload.fullName!,
+    email: userPayload.email!,
+    password: hashedPassword,
+  };
 
-    const createdUser = await prisma.user.create({
-        data: modifiedUser
-    })
+  const createdUser = await prisma.user.create({
+    data: modifiedUser,
+  });
 
-    return createdUser
+  return createdUser;
+};
 
-}
+const getCurrentUser = async (userId: number) => {
+  const currentUser = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!currentUser) {
+    throw new AppError(404, "User Not found");
+  }
+
+  const { password, ...rest } = currentUser;
+
+  return rest;
+};
 
 export const UserServices = {
-    createUser
-}
+  createUser,
+  getCurrentUser,
+};

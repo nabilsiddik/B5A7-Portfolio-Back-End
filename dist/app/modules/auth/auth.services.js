@@ -26,8 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthServices = void 0;
 const db_config_1 = require("../../config/db.config");
 const appError_1 = __importDefault(require("../../errorHelpers/appError"));
-const setCookie_1 = require("../../utils/setCookie");
-const userTokens_1 = require("../../utils/userTokens");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 // user credential login
 const userLogin = (res, payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -36,7 +34,7 @@ const userLogin = (res, payload) => __awaiter(void 0, void 0, void 0, function* 
         throw new appError_1.default(404, "Invalid credential");
     }
     const existingUser = yield db_config_1.prisma.user.findUnique({
-        where: { email }
+        where: { email },
     });
     if (!existingUser) {
         throw new appError_1.default(400, "User does not exist with this email.");
@@ -45,19 +43,9 @@ const userLogin = (res, payload) => __awaiter(void 0, void 0, void 0, function* 
     if (!isPasswordMatchd) {
         throw new appError_1.default(400, "Password is not valid");
     }
-    const userTokens = (0, userTokens_1.createUserTokens)(existingUser);
-    (0, setCookie_1.setAuthCookie)(res, userTokens);
     const { password: pas } = existingUser, restUser = __rest(existingUser, ["password"]);
     return restUser;
 });
-// get new access token using refresh token
-const getNewAccessToken = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
-    const getNewAccessToken = yield (0, userTokens_1.createNewAccessTokenWithRefreshToken)(refreshToken);
-    return {
-        accessToken: getNewAccessToken
-    };
-});
 exports.AuthServices = {
     userLogin,
-    getNewAccessToken
 };

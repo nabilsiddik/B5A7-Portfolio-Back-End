@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { BlogControllers } from "./blog.controllers";
-import { checkAuth } from "../../middlewares/checkAuth";
+import { validateRequest } from "../../middlewares/validateRequest";
+import { blogSchema } from "./blog.validations";
 
-const blogRouter = Router()
+const blogRouter = Router();
 
-blogRouter.post('/', BlogControllers.createBlog)
-blogRouter.get('/', BlogControllers.getAllBlogs)
-blogRouter.get('/:id', BlogControllers.getSingleBlog)
-blogRouter.patch('/:id', BlogControllers.updateBlog)
-blogRouter.delete('/:id', BlogControllers.deleteBlog)
+blogRouter.post("/", validateRequest(blogSchema), BlogControllers.createBlog);
+blogRouter.get("/", BlogControllers.getAllBlogs);
+blogRouter.get("/:id", BlogControllers.getSingleBlog);
+blogRouter.patch("/:id", BlogControllers.updateBlog);
+blogRouter.delete("/:id", BlogControllers.deleteBlog);
 
-export default blogRouter
+export default blogRouter;

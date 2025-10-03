@@ -18,10 +18,21 @@ const createUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
         success: true,
-        message: 'User Created Successfully',
-        data: user
+        message: "User Created Successfully",
+        data: user,
+    });
+}));
+const getCurrentUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.params.userId;
+    const currentUser = yield user_services_1.UserServices.getCurrentUser(Number(userId));
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Current user retrived Successfully",
+        data: currentUser,
     });
 }));
 exports.UserControllers = {
-    createUser
+    createUser,
+    getCurrentUser,
 };
