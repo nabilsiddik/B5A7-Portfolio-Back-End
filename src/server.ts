@@ -19,9 +19,10 @@ const dbConnect = async () => {
 
 const startServer = async () => {
   await dbConnect();
+  await seedAdmin();
   // app.listen(port, async () => {
   //   console.log(`Server is running on port ${port}`);
-  //   await seedAdmin();
+
   // });
 };
 
